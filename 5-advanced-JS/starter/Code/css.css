@@ -1,0 +1,91 @@
+/**********************************************
+*** GENERAL
+**********************************************/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+
+
+
+/**********************************************
+*** PLAYERS
+**********************************************/
+.name {
+    font-size: 20px;
+    text-align: center;
+
+    letter-spacing: 2px;
+    font-weight: 120;
+    margin-top: 100px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.player-name {
+    font-size: 20px;
+    text-align: center;
+
+    letter-spacing: 2px;
+    font-weight: 100;
+    margin-top: 300px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.text {
+
+    position: absolute;
+    font-size:15px;
+    left: 50%;
+    top: 500px;
+    transform: translateX(-50%);
+    height: 30px;
+    border-radius: 20px;
+    width: 20%;
+    text-align: center
+    }
+
+.text1 {
+
+        position: absolute;
+        font-size:15px;
+        left: 50%;
+        top: 200px;
+        transform: translateX(-50%);
+        height: 30px;
+        border-radius: 20px;
+        width: 20%;
+        text-align: center
+        }
+
+.btn {
+    position: absolute;
+    width: 100px;
+    left: 47%;
+
+    top: 540px;
+    background: none;
+    border: 2px solid ;
+border-radius: 6px;
+    font-size: 15px;
+
+    cursor: pointer;
+
+
+}
+.btn1 {
+    position: absolute;
+    width: 100px;
+    left: 47%;
+
+    top: 240px;
+    background: none;
+    border: 2px solid ;
+border-radius: 6px;
+    font-size: 15px;
+
+    cursor: pointer;

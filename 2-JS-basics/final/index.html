@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Section 2: JavaScript Language Basics</title>
+    </head>
+
+    <body>
+        <h1>Section 2: JavaScript Language Basics</h1>
+    </body>
+
+    <script>
+/*
+var JohnTeam1 =89;
+var JohnTeam2 =120;
+var JohnTeam3 =103;
+var MikeTeam1 =116;
+var MikeTeam2 =94;
+var MikeTeam3 =123;
+var MaryTeam1 =97;
+var MaryTeam2 =134;
+var MaryTeam3 =105;
+var averageJohn = (JohnTeam1+JohnTeam2+JohnTeam3)/3;
+var averageMike = (MikeTeam1+MikeTeam2+MikeTeam3)/3;
+var averageMary = (MaryTeam1+MaryTeam2+MaryTeam3)/3;
+if (averageJohn > averageMike && averageJohn > averageMary){
+  console.log ('John\'s team won with a score '+averageJohn)
+} else if (averageMike > averageJohn && averageMike > averageMary){
+  console.log('Mike\'s team won with a score '+averageMike)
+} else if (averageMary > averageMike && averageMary > averageJohn){
+  console.log('Mary\'s team won with a score '+averageMary)
+} else {
+  console.log('They are equals')
+};
+
+console.log('John= '+averageJohn, 'Mike= '+averageMike, 'Mary= '+averageMary);
+***********************************************************
+var calculator = function(bill){
+  switch(true){
+    case bill<50:
+    return tip = bill*0.2;
+    case bill>= 50 && bill <=200:
+    return tip = bill*0.15;
+    case bill>200:
+    return tip = bill*0.1;
+  }
+}
+var A = calculator(124);
+var B = calculator(48);
+var C = calculator(268);
+var tipping = [A,B,C];
+console.log(tipping);
+
+var tipA = A + 124;
+var tipB = B + 48;
+var tipC = C + 268;
+var finalpaid = [tipA,tipB,tipC];
+console.log(finalpaid);
+***********************************************************
+
+var John = {
+  firstName: 'John',
+  lastName: 'Smith',
+  mass:80,
+  height:1.8,
+  calcBMI:function(){
+  this.BMI = this.mass/(this.height*this.height);
+  return this.BMI
+  }
+};
+John.calcBMI();
+var Mark = {
+  firstName: 'Mark',
+  lastName: 'Johnson',
+  mass:70,
+  height:1.77,
+  calcBMI:function(){
+  this.BMI = this.mass/(this.height*this.height);
+  return this.BMI
+  }
+  };
+  Mark.calcBMI();
+
+  if (John.BMI>Mark.BMI){
+  console.log('John\'s BMI '+ John.BMI +' is higher than Mark\'s BMI ' + Mark.BMI);
+} else if (John.BMI<Mark.BMI){
+  console.log('Mark\'s BMI '+ Mark.BMI +'is higher than John\'s BMI ' + John.BMI);
+} else {
+  console.log('John\'s and Mark\'s BMI are the same');
+};
+
+var john = ['John', 'Smith', '1990', 'true', 'blue'];
+for (var i =0; i < john.length; i++){
+  console.log(john[i]);
+}
+***************************************************************************
+*/
+var js = {
+  fullName: 'John Smith',
+  bills: [124, 48, 268, 180, 42],
+  calcTip:function(){
+    this.tips=[];
+    this.final=[];
+    for (var i=0; i<this.bills.length; i++)
+    {
+      var percentage;
+      var bill = this.bills[i];
+      if (bill<50){percentage=.2}
+      else if (bill>=50 && bill<=200){percentage=.15}
+      else {percentage=.1}
+      this.tips[i]=bill*percentage;
+      this.final[i]=bill+bill*percentage;
+}
+}
+}
+
+var js2 = {
+  fullName: 'Mark Smith',
+  bills: [77, 475, 110, 45],
+  calcTip:function(){
+    this.tips=[];
+    this.final=[];
+    for (var i=0; i<this.bills.length; i++)
+    {
+    var percentage;
+    var bill = this.bills[i];
+    if (bill<100) {percentage=.2}
+    else if (bill>=100 && bill<=300) {percentage=.1}
+    else {percentage=.25}
+    this.tips[i]=bill*percentage;
+    this.final[i]=bill+bill*percentage;
+  }
+}
+}
+
+function calcAvg(t){
+  var sum =0;
+  for (var i=0; i<t.length; i++){
+    sum=sum+t[i];
+  }
+  return sum/t.length;
+};
+js.calcTip();
+js2.calcTip();
+js.average = calcAvg(js.tips);
+js2.average = calcAvg(js2.tips);
+console.log(js);
+console.log(js2);
+console.log('Jonh\'s family paid ' + js.average + ' tips in average');
+console.log('Mark\'s family paid ' + js2.average + ' tips in average');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</html>
