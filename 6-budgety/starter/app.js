@@ -175,6 +175,7 @@ return{
                   })(UIController, BudgetController);
 
 controller.init();
+
 /* We can execute something inside var if that var inside function that called
 function call(){
   var a = console.log('hi!');
