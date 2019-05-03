@@ -267,17 +267,17 @@ var Question = function(question, options, answer){
 Question.prototype.randomQuestion= function() {
   console.log(this.question);
   for (var i=0; i<this.options.length; i++){
-  console.log(i+': '+this.options[i]);
+  console.log(i+': '+this.options[i]); //i+ will numer each question starting with 0
   }
 };
 Question.prototype.verify = function(ans, callback) {
   if (ans===this.answer) {
     var sc;
     console.log("Correct!");
-    sc = callback(true);
+    sc = callback(true);//passing true as an arg to the private function that is returned by score function
   }else{
   console.log("Wrong!")
-  sc = callback(false);
+  sc = callback(false);//passing false as an arg to the private function that is returned by score function
 }
 this.displayScore(sc);
 };
@@ -286,8 +286,8 @@ function init() {
   var n = Math.floor(Math.random() * list.length);
   list[n].randomQuestion();
   var ans = prompt("Please enter your answer");
-  if (ans!=='exit'){
-    list[n].verify(parseInt(ans), keepScore);
+  if (ans!=='exit' && ans!==null){
+    list[n].verify(parseInt(ans), keepScore); //calling verify, keepScore is passing score function
     init();
   }
 };
@@ -300,7 +300,7 @@ function score(){
     return sc;
   }
 };
-var keepScore = score();
+var keepScore = score(); //we are putting score in the variable because we can't pass fucntion as arg when calling verify
 Question.prototype.displayScore = function(score){
   console.log("Your score is: "+score);
   console.log("-----------------------------------------------------");
@@ -313,7 +313,7 @@ var q3 = new Question ('In which continent is Brazil?',
 ['Asia','South America','North America','Europe'],1);
 init();
 })();
-
+*/
 /*
 function(correct) {
     if(correct) {
@@ -321,11 +321,31 @@ function(correct) {
     }
     return sc;
 }
-so when we pass it to verify function we are passing two parameters
+so when we pass it to verify function we are passing two parameters:
 the call back function that I have above and the answer that was passed
 by the user. That is why inside the verify we pass true or false
 inside the callback() and when we call it we get the new score or the
 same score depending if the answer is correct. So since we are just
 calling the return function of score() we never execute var sc = 0;
 
+/*
+//Paasing fucntion as argument
+var arg = call2();
+
+function call(smth){
+  var a = smth(false);
+  console.log(a);
+};
+
+function call2(){
+  var a = 0;
+  return function(answer){
+    if (answer){
+      a=a+1;
+    }
+  return a;
+}
+};
+
+call(arg);
 */
