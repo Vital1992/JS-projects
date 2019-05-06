@@ -59,7 +59,7 @@ return{
   data.allItems[type].push(newItem);
   return newItem;
   //Add all of this to the #2 in controller
-},
+}, //closing addItem function
 testing:function(){
 //that's how id can be retrieved console.log(data.allItems.inc[0].id);
 console.log(data);
@@ -80,12 +80,14 @@ var UIController = (function(){
     };
     return{
         getInput:function(){
-            return{
+            return{ // To return all three values at once we can save them in input object
                 type: document.querySelector(DOMstrings.inputType).value, // Will be either income or expense
                 description: document.querySelector(DOMstrings.inputDescription).value,
-                value: document.querySelector(DOMstrings.inputValue).value
+                value: parseFloat(document.querySelector(DOMstrings.inputValue).value)
+//parseFloat - to convert input to number with decimals, otwerwise it will be saved as a string
             };
         },
+
         addListItem:function(obj, type){
           var html, newHtml;
           //Create HTML string with placeholder text
@@ -105,8 +107,10 @@ html = '<div class="item clearfix" id="expense-%id%"><div class="item__descripti
           document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 
         },
+
         clearFields: function(){
           var fields, fieldsArr;
+          //creating array of input fields
           fields = document.querySelectorAll(DOMstrings.inputDescription +
             ',' + DOMstrings.inputValue);
           // Converting NodeList to the array using slice
@@ -151,22 +155,34 @@ var controller = (function(UICtrl,BudgetCtrl){
             }
             });
     };
+    var updateBudget = function(){
+      // 1. Calculate the budget
+
+      // 2. Return the budget
+
+      // 3. Display the budget on the UI
+
+    };
 
     var CtrlAddItem = function(){
       var input, newIteml;
     // 1. Get input filed data
       input = UICtrl.getInput();
       console.log(input);
+// To prevent adding empty values by clicking on V button and pushing enter button:
+    if (input.description !== "" && !isNaN(input.value) && input.value>0) {  // !isNaN means is should not be NaN (so accept only numbers)
     // 2. Add the item to the budget controller
       newItem = BudgetCtrl.addItem(input.type, input.description, input.value);
     // Passing values from UI controller to the Budget controller function which will add those values to the array
     // 3. Add the item to the UI
       UICtrl.addListItem(newItem, input.type);
-    // Cleat the input field
-    UICtrl.clearFields();
-    // 4. Calculate the budget
-    // 5. Display the budget on the UI
+    // 4. Cleat the input field
+      UICtrl.clearFields();
+    // 5. Calculate and update Budget
+      updateBudget();
+  }
     };
+
 return{
     init:function(){
         setupEventListeners();
