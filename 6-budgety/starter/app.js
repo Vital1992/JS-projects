@@ -34,8 +34,19 @@ var BudgetController = (function(){
     totals:{
       exp:0,
       inc:0
-    }
+    },
+    budget:0, //to store budget: income - expenses
+    percentage:-1 //percentage of income that we spent, set to -1 to make initial value non-existent
   };
+
+var calculateTotal = function(type){
+  var sum = 0;
+  data.allItems[type].forEach(function(cur){ //looping thru exp or inc array to sum up all values
+    sum = sum + cur.value
+  });
+  data.totals[type] = sum; //to add it to the totals object
+};
+
 //public method to allow other modules to add new items to the data sctructure
 return{
   addItem: function(type, des, val){
@@ -60,6 +71,27 @@ return{
   return newItem;
   //Add all of this to the #2 in controller
 }, //closing addItem function
+  calculateBudget: function(){
+    //Calculate total income and expenses: it's private calculateTotal function
+    calculateTotal('exp');
+    calculateTotal('inc');
+    //Calculate the budget: income-expenses
+    data.budget = data.totals.inc - data.totals.exp;
+    //Calculate the percentage of income that we spent
+    if (data.totals.inc>0){ // To prevent dividing exp by 0
+    data.percentage = Math.round((data.totals.exp / data.totals.inc)*100);
+  }else{
+    data.percentage = -1;
+  }
+  },
+  getBudget: function(){ //to collect budget, percentage and totals and pass it to updateBudget method
+    return{
+      budget: data.budget,
+      totalInc: data.totals.inc,
+      totalExp: data.totals.exp,
+      percentage: data.percentage
+    };
+  },
 testing:function(){
 //that's how id can be retrieved console.log(data.allItems.inc[0].id);
 console.log(data);
@@ -157,15 +189,15 @@ var controller = (function(UICtrl,BudgetCtrl){
     };
     var updateBudget = function(){
       // 1. Calculate the budget
-
+      BudgetCtrl.calculateBudget();
       // 2. Return the budget
-
+      var budget = BudgetCtrl.getBudget();
       // 3. Display the budget on the UI
-
+console.log(budget);
     };
 
     var CtrlAddItem = function(){
-      var input, newIteml;
+      var input, newItem;
     // 1. Get input filed data
       input = UICtrl.getInput();
       console.log(input);
