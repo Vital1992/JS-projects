@@ -42,7 +42,7 @@ var BudgetController = (function(){
 var calculateTotal = function(type){
   var sum = 0;
   data.allItems[type].forEach(function(cur){ //looping thru exp or inc array to sum up all values
-    sum = sum + cur.value
+    sum = sum + cur.value //cur.valur selects number from 'value' peram of Exp or Inc object
   });
   data.totals[type] = sum; //to add it to the totals object
 };
@@ -108,7 +108,11 @@ var UIController = (function(){
             inputValue:'.add__value',
             inputBtn:'.add__btn',
             incomeContainer:'.income__list',
-            expensesContainer:'.expenses__list'
+            expensesContainer:'.expenses__list',
+            budgetLabel:'.budget__value',
+            incomeLabel:'.budget__income--value',
+            expensesLabel:'.budget__expenses--value',
+            percentageLabel:'.budget__expenses--percentage'
     };
     return{
         getInput:function(){
@@ -169,6 +173,19 @@ clearField: function () {
             }
         },
           */
+
+        displayBudget: function(obj){
+          document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
+          document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
+          document.querySelector(DOMstrings.expensesLabel).textContent = obj.totalExp;
+
+          if (obj.percentage>0){ // to not show -1% when we have only expenses
+            document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
+          }else{
+            document.querySelector(DOMstrings.percentageLabel).textContent = '---';
+          }
+        },
+
         getDOMstrings: function(){
             return DOMstrings;
         }
@@ -193,7 +210,8 @@ var controller = (function(UICtrl,BudgetCtrl){
       // 2. Return the budget
       var budget = BudgetCtrl.getBudget();
       // 3. Display the budget on the UI
-console.log(budget);
+      UICtrl.displayBudget(budget);
+      console.log(budget);
     };
 
     var CtrlAddItem = function(){
@@ -217,6 +235,12 @@ console.log(budget);
 
 return{
     init:function(){
+        UICtrl.displayBudget({
+          budget: 0,
+          totalInc: 0,
+          totalExp: 0,
+          percentage: 0
+        }); // to put 0 in all content
         setupEventListeners();
     }
 };
