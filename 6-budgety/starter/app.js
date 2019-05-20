@@ -112,7 +112,9 @@ var UIController = (function(){
             budgetLabel:'.budget__value',
             incomeLabel:'.budget__income--value',
             expensesLabel:'.budget__expenses--value',
-            percentageLabel:'.budget__expenses--percentage'
+            percentageLabel:'.budget__expenses--percentage',
+            container: '.container'
+            //using container as event listener because it's parent of "delete" button child which is not available yet in teh DOM when page is loaded
     };
     return{
         getInput:function(){
@@ -129,10 +131,10 @@ var UIController = (function(){
           //Create HTML string with placeholder text
           if (type =='inc'){
             element = DOMstrings.incomeContainer;
-html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+html = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
           }else if (type =='exp'){
             element = DOMstrings.expensesContainer;
-html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+html = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 }
           //Replace the placeholder with some actual data
           newHtml = html.replace('%id%', obj.id);
@@ -203,6 +205,7 @@ var controller = (function(UICtrl,BudgetCtrl){
             CtrlAddItem()
             }
             });
+            document.querySelector(DOM.container).addEventListener('click', CtrlDeleteItem);
     };
     var updateBudget = function(){
       // 1. Calculate the budget
@@ -231,6 +234,25 @@ var controller = (function(UICtrl,BudgetCtrl){
     // 5. Calculate and update Budget
       updateBudget();
   }
+    };
+
+    var CtrlDeleteItem = function(event){ //event is the target element of event delegation, the target property of the event is showing us where the event was fired
+      //console.log(event.target); //is showing the target element
+      //console.log(event.target.parentNode.parentNode.parentNode.parentNode); //moving up to the parent, it's called DOM traversing
+      //console.log(event.target.parentNode.parentNode.parentNode.parentNode.id); //to get that item by id
+      var itemID, splitID, type, ID;
+      itemID = event.target.parentNode.parentNode.parentNode.parentNode.id; //result will be "inc-0" or "exp-0", which is HTML from addListItem
+      if (itemID){
+        splitID = itemID.split('-');
+        type = splitID[0]; //because spliID will have array ["inc","0"] or ["exp","0"]
+        ID = splitID[1];
+
+        //1. Delete the item from the data structure
+
+        //2. Delete the item from the UI
+
+        //3. Update and show the new budget
+      }
     };
 
 return{
