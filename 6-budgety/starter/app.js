@@ -71,6 +71,21 @@ return{
   return newItem;
   //Add all of this to the #2 in controller
 }, //closing addItem function
+
+  deleteItem: function(type, id){
+    var ids, index;
+      ids = data.allItems[type].map(function(current){ //map loop unlike forEach loop, returns a brand new array
+      return current.id; // returning array of ids of Expense or Income objects
+    });
+
+    index = ids.indexOf(id); // returns the index number of the element of the 'id' array that we pass as an arg
+
+    if (index !== -1){ //if the index exists, -1 means we didn't find the element
+    data.allItems[type].splice(index, 1) // splice is removing an item, the first arg is the position number at which we want to start deleting
+    // the second arg is the number of elements we want to delete
+    }
+  },
+
   calculateBudget: function(){
     //Calculate total income and expenses: it's private calculateTotal function
     calculateTotal('exp');
@@ -245,9 +260,10 @@ var controller = (function(UICtrl,BudgetCtrl){
       if (itemID){
         splitID = itemID.split('-');
         type = splitID[0]; //because spliID will have array ["inc","0"] or ["exp","0"]
-        ID = splitID[1];
+        ID = parseInt(splitID[1]); //to convert a string into an integer
 
         //1. Delete the item from the data structure
+        BudgetCtrl.deleteItem(type, ID);
 
         //2. Delete the item from the UI
 
