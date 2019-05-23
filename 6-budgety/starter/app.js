@@ -161,6 +161,11 @@ html = '<div class="item clearfix" id="exp-%id%"><div class="item__description">
 
         },
 
+        deleteListItem: function(selectorID){
+          var el = document.getElementById(selectorID); //selectorID will be "inc-0" or "exp-0"
+          el.parentNode.removeChild(el); // parentNode.removeChild removes the item, in our case by "inc-0" or "exp-0" id
+        },
+
         clearFields: function(){
           var fields, fieldsArr;
           //creating array of input fields
@@ -266,8 +271,10 @@ var controller = (function(UICtrl,BudgetCtrl){
         BudgetCtrl.deleteItem(type, ID);
 
         //2. Delete the item from the UI
+        UICtrl.deleteListItem(itemID);
 
         //3. Update and show the new budget
+        updateBudget();
       }
     };
 
