@@ -120,7 +120,7 @@ return{
     });
   },
 
-  getPercentages: function(){ //return all expenses' percantages in one array
+  getPercentages: function(){ //return all expenses' percentages in one array
     var allPerc = data.allItems.exp.map(function(cur){
       return cur.getPercentage();
     });
@@ -156,8 +156,9 @@ var UIController = (function(){
             incomeLabel:'.budget__income--value',
             expensesLabel:'.budget__expenses--value',
             percentageLabel:'.budget__expenses--percentage',
-            container: '.container'
+            container: '.container',
             //using container as event listener because it's parent of "delete" button child which is not available yet in teh DOM when page is loaded
+            expensesPercLabel: '.item__percentage'
     };
     return{
         getInput:function(){
@@ -236,6 +237,28 @@ clearField: function () {
           }
         },
 
+        displayPercentages: function(percentages){ //passing array with all percentages
+          var fields = document.querySelectorAll(DOMstrings.expensesPercLabel); //returns nodeList
+          //forEach loop but for nodeLists
+          var nodeListForEach = function(list, callback){
+            for (var i=0; i<list.length; i++){
+              callback(list[i], i)
+            }
+          };
+// When we call "nodeListForEach function", we pass a callback function into it (function(current, index))
+//and this function is assigned to "callback" parameter. We loop over the nodeList and in each iteration
+//the callback function (callback(list[i], i)) gets called with the arguments that are exactly the same as in
+//(function(current, index)). So list[i]=current, i=index. And the code in below function will be exucuted as much
+//times as much iterations "var nodeListForEach" has
+          nodeListForEach(fields, function(current, index){
+            if (percentages[index] > 0){
+              current.textContent = percentages[index] + '%'; //displaying percentage number from percentages array using index
+            }else{
+              current.textContent = '---'; //if percentage is 0
+            }
+          });
+        },
+
         getDOMstrings: function(){
             return DOMstrings;
         }
@@ -269,9 +292,10 @@ var controller = (function(UICtrl,BudgetCtrl){
       // 1. Calculate percentages
       BudgetCtrl.calculatePercenatges();
       // 2. Read percentages from the budget controller
-      var percenatges = BudgetCtrl.getPercentages();
-      // 3. Update the UI with the new percantages
-      console.log(percenatges);
+      var percentages = BudgetCtrl.getPercentages();
+      // 3. Update the UI with the new percentages
+      console.log(percentages);
+      UICtrl.displayPercentages(percentages);
     };
 
     var CtrlAddItem = function(){
@@ -290,7 +314,7 @@ var controller = (function(UICtrl,BudgetCtrl){
       UICtrl.clearFields();
     // 5. Calculate and update Budget
       updateBudget();
-    // 6. Calculate and update the percantages
+    // 6. Calculate and update the percentages
       updatePercentages();
   }
     };
@@ -315,8 +339,8 @@ var controller = (function(UICtrl,BudgetCtrl){
         //3. Update and show the new budget
         updateBudget();
 
-        // 4. Calculate and update the percantages
-          updatePercentages();
+        // 4. Calculate and update the percentages
+        updatePercentages();
       }
     };
 
