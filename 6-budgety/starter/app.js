@@ -18,7 +18,21 @@ var BudgetController = (function(){
     this.id=id;
     this.description=description;
     this.value=value;
+    this.percentage= -1; //adding percentage to the "exp" array of the data structure
   };
+  //calculate percantage fore each expense
+  Expense.prototype.calcPercentage = function(totalIncome){
+    if (totalIncome > 0){ //to avoid dividing by 0
+    this.percentage = Math.round((this.value/totalIncome)*100);
+    }else{
+    this.percentage = -1;
+    }
+  };
+  //return calculated percentage
+  Expense.prototype.getPercentage = function(){
+    return this.percentage;
+  };
+
   //function constructor for income
   var Income = function(id, description, value){
     this.id=id;
@@ -99,6 +113,20 @@ return{
     data.percentage = -1;
   }
   },
+
+  calculatePercenatges: function(){ //calculate the percentage for each expense we have in the data structure
+    data.allItems.exp.forEach(function(cur){
+      cur.calcPercentage(data.totals.inc);
+    });
+  },
+
+  getPercentages: function(){ //return all expenses' percantages in one array
+    var allPerc = data.allItems.exp.map(function(cur){
+      return cur.getPercentage();
+    });
+    return allPerc;
+  },
+
   getBudget: function(){ //to collect budget, percentage and totals and pass it to updateBudget method
     return{
       budget: data.budget,
@@ -237,6 +265,15 @@ var controller = (function(UICtrl,BudgetCtrl){
       console.log(budget);
     };
 
+    var updatePercentages = function(){ //Update percenatges for each expense
+      // 1. Calculate percentages
+      BudgetCtrl.calculatePercenatges();
+      // 2. Read percentages from the budget controller
+      var percenatges = BudgetCtrl.getPercentages();
+      // 3. Update the UI with the new percantages
+      console.log(percenatges);
+    };
+
     var CtrlAddItem = function(){
       var input, newItem;
     // 1. Get input filed data
@@ -253,6 +290,8 @@ var controller = (function(UICtrl,BudgetCtrl){
       UICtrl.clearFields();
     // 5. Calculate and update Budget
       updateBudget();
+    // 6. Calculate and update the percantages
+      updatePercentages();
   }
     };
 
@@ -275,6 +314,9 @@ var controller = (function(UICtrl,BudgetCtrl){
 
         //3. Update and show the new budget
         updateBudget();
+
+        // 4. Calculate and update the percantages
+          updatePercentages();
       }
     };
 
