@@ -160,6 +160,26 @@ var UIController = (function(){
             //using container as event listener because it's parent of "delete" button child which is not available yet in teh DOM when page is loaded
             expensesPercLabel: '.item__percentage'
     };
+
+    //1. Round all decimals to 2 points: 2310.4567 -> + 2,310.46
+    //2. Add '+' in front of incomes and '-' in front of expenses
+    //3. Add commas to separate thousands
+            var formatNumber = function(num, type){
+              var numSplit, inc, dec, type;
+              num = Math.abs(num); //absolute number to remove any signs (+/-)
+              num = num.toFixed(2); //round all decimals to 2 points
+
+              numSplit = num.split('.'); //split 2000,495 to 2000 and 495
+              int = numSplit[0];
+              if (int.length > 3){ //length shows how many numbers our value has (5000->4)
+                int = int.substr(0, int.length-3) + ',' + int.substr(int.length-3, 3) //first arg of "substr" is the index number wehere we want to start and the second arg is the how many characters we want
+              } //2000 -> 2 + , + 000 = 2,000
+
+              dec = numSplit[1];
+
+              return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec; // (type === 'exp' ? '-' : '+') will be replaced with + or -
+            };
+
     return{
         getInput:function(){
             return{ // To return all three values at once we can save them in input object
@@ -183,7 +203,7 @@ html = '<div class="item clearfix" id="exp-%id%"><div class="item__description">
           //Replace the placeholder with some actual data
           newHtml = html.replace('%id%', obj.id);
           newHtml = newHtml.replace('%description%', obj.description);
-          newHtml = newHtml.replace('%value%', obj.value);
+          newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
 
           //Insert the HTML into the DOM
           document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
@@ -226,9 +246,11 @@ clearField: function () {
           */
 
         displayBudget: function(obj){
-          document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
-          document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
-          document.querySelector(DOMstrings.expensesLabel).textContent = obj.totalExp;
+          var type;
+          obj.budget > 0 ? type = 'inc' : type = 'exp';
+          document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget,type);
+          document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
+          document.querySelector(DOMstrings.expensesLabel).textContent = formatNumber(obj.totalExp, 'exp');
 
           if (obj.percentage>0){ // to not show -1% when we have only expenses
             document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
