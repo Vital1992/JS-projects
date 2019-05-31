@@ -258,7 +258,23 @@ clearField: function () {
             }
           });
         },
-
+/*
+        Alternative way:
+        displayPercentages: function(percentages){ //passing array with all percentages
+          var fields = document.querySelectorAll(DOMstrings.expensesPercLabel); //returns nodeList
+          //forEach loop but for nodeLists
+          var nodeListForEach = function(){
+            for (var i=0; i<fields.length; i++){
+              if (percentages[i]>0){
+                fields[i].textContent = percentages[i] + '%'
+              }else{
+                fields[i].textContent = '---';
+              }
+            }
+          };
+          nodeListForEach();
+        },
+*/
         getDOMstrings: function(){
             return DOMstrings;
         }
