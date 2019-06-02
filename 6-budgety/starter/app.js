@@ -171,9 +171,12 @@ var UIController = (function(){
 
               numSplit = num.split('.'); //split 2000,495 to 2000 and 495
               int = numSplit[0];
-              if (int.length > 3){ //length shows how many numbers our value has (5000->4)
+              if (int.length > 3 && int.length<=6){ //length shows how many numbers our value has (5000->4)
                 int = int.substr(0, int.length-3) + ',' + int.substr(int.length-3, 3) //first arg of "substr" is the index number wehere we want to start and the second arg is the how many characters we want
               } //2000 -> 2 + , + 000 = 2,000
+    else if (int.length>6){
+                int = int.substr(0, int.length-6) + ',' + int.substr(int.length-3, 3) + ',' + int.substr(int.length-6, 3)
+              };
 
               dec = numSplit[1];
 
