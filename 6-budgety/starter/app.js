@@ -158,7 +158,8 @@ var UIController = (function(){
             percentageLabel:'.budget__expenses--percentage',
             container: '.container',
             //using container as event listener because it's parent of "delete" button child which is not available yet in teh DOM when page is loaded
-            expensesPercLabel: '.item__percentage'
+            expensesPercLabel: '.item__percentage',
+            dateLabel:'.budget__title--month'
     };
 
     //1. Round all decimals to 2 points: 2310.4567 -> + 2,310.46
@@ -300,6 +301,18 @@ clearField: function () {
           nodeListForEach();
         },
 */
+
+        displayMonth: function(){
+        var now, year, months;
+        now = new Date(); //returns current Date, then we can use mehods to retrieve the current, date,hour, minute, month, year
+        // var christmas = new Date(2019, 11, 25); //another way to pass a day
+        year = now.getFullYear(); //method to get a year
+
+        months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        month = now.getMonth(); //get a months but as an index
+        document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' +year; //months[month] will retrieve month name from the array
+        },
+
         getDOMstrings: function(){
             return DOMstrings;
         }
@@ -387,6 +400,7 @@ var controller = (function(UICtrl,BudgetCtrl){
 
 return{
     init:function(){
+        UICtrl.displayMonth();
         UICtrl.displayBudget({
           budget: 0,
           totalInc: 0,
