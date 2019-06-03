@@ -184,6 +184,13 @@ var UIController = (function(){
               return (type === 'exp' ? '-' : '+') + ' ' + int + '.' + dec; // (type === 'exp' ? '-' : '+') will be replaced with + or -
             };
 
+            //forEach loop but for nodeLists
+            var nodeListForEach = function(list, callback){
+              for (var i=0; i<list.length; i++){
+                callback(list[i], i)
+              }
+            };
+
     return{
         getInput:function(){
             return{ // To return all three values at once we can save them in input object
@@ -265,12 +272,7 @@ clearField: function () {
 
         displayPercentages: function(percentages){ //passing array with all percentages
           var fields = document.querySelectorAll(DOMstrings.expensesPercLabel); //returns nodeList
-          //forEach loop but for nodeLists
-          var nodeListForEach = function(list, callback){
-            for (var i=0; i<list.length; i++){
-              callback(list[i], i)
-            }
-          };
+
 // When we call "nodeListForEach function", we pass a callback function into it (function(current, index))
 //and this function is assigned to "callback" parameter. We loop over the nodeList and in each iteration
 //the callback function (callback(list[i], i)) gets called with the arguments that are exactly the same as in
@@ -312,6 +314,18 @@ clearField: function () {
         month = now.getMonth(); //get a months but as an index
         document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' +year; //months[month] will retrieve month name from the array
         },
+//Change color of input fileds to red if it's expense
+        changedType: function(){
+          var fields = document.querySelectorAll(
+            DOMstrings.inputType + ',' +
+            DOMstrings.inputDescription + ',' +
+            DOMstrings.inputValue
+          );
+          nodeListForEach(fields, function(cur){
+            cur.classList.toggle('red-focus'); //toggle - each time type chanages class will be changed (it's there or not there)
+          });
+          document.querySelector(DOMstrings.inputBtn).classList.toggle('red'); //to change color of button
+        },
 
         getDOMstrings: function(){
             return DOMstrings;
@@ -331,6 +345,8 @@ var controller = (function(UICtrl,BudgetCtrl){
             }
             });
             document.querySelector(DOM.container).addEventListener('click', CtrlDeleteItem);
+//Event that will change input fields color to blue for income and red for expense
+            document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType); //change event is the change of the list box
     };
     var updateBudget = function(){
       // 1. Calculate the budget
