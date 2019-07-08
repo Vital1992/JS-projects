@@ -68,7 +68,7 @@ for(let i = 0; i < 5; i++){
 
 console.log(i);//will return 23 because loop is in the other block
 */
-
+/*
 //Strings in ES6
 let firstName = 'John';
 let lastName = 'Smith';
@@ -117,7 +117,7 @@ ages6 = years.map((el,index)=>{
 console.log(ages6);
 
 //Unlike normal functions, arrow functions don't have this keyword
-
+*/
 //ES5
 /*
 var box5 = {
@@ -134,7 +134,7 @@ box5.clickMe(); //This is box number undefined and it is undefined
 //function inside EventListener is not a method so it doesn't have acces to color and position objects
 */
 // To have acces to this objects, we need to create var inside fucntion and it will = this
-
+/*
 var box5 = {
   color:'green',
   position:1,
@@ -199,3 +199,132 @@ function(friends){
   console.log(arr);
 }
 new Person ('Mike').myFriends6(friends);
+*/
+/*------------------------------------------------------------------------------------------------------------
+//Destructuring - the way to extract data from an object or an array
+//ES5
+var john = ['John', 26];
+var name = john[0];
+var age = john[1];
+
+//ES6
+const [name, age] = ['John', 26]; //will create a const called name and const called age
+
+const obj = {
+  firstName: 'John',
+  lastName: 'Smith'
+};
+const {firstName, lastName} = obj; //created two new constanst with data from obj
+
+//If we don't want the var names match with key names we can use different names
+const {firstName: a, lastName: b} = obj;//a will be John and b will be Smith
+
+//In ES5 if we had more than one value to return from a function we used objects
+//In ES6
+function calcAgeRetirement(year){
+  const age = new Date().getFullYear() - year;
+  return [age, 65 - age];
+}
+const [age, retirement] = calcAgeRetirement(1990);
+console.log(age);
+console.log(retirement);
+*/
+//Arrays in ES6
+const boxes = document.querySelectorAll('.box');
+//Transform Nodelist into Array
+//ES5
+
+var boxesArr5 = Array.prototype.slice.call(boxes);
+console.log(boxesArr5);//result: [div.box.green, div.box.blue, div.box.orange], each box is the Object with lots of internal vars and objects
+boxesArr5.forEach(function(cur){
+  cur.style.backgroundColor = 'dodgerblue';//style.backgroundColor set the style object of each div.box to another backgroundColor
+});
+
+//ES6
+const boxesArr6 = Array.from(boxes);//Transform Nodelist into Array
+boxesArr6.forEach(cur => cur.style.backgroundColor = 'dodgerblue');
+
+//Loops
+
+// In ES5 forEach loop and map we can't brake from them and we also can't use the continue statement, so have to use for loop
+/*
+for(var i=0; i<boxesArr5.length; i++){
+  if(boxesArr5[i].className === 'box blue'){
+    //continue; // all boxes except for 'box blue' will have tho following textContent
+    break; //only first box will have tho following textContent
+  }
+  boxesArr5[i].textContent = 'I changed to blue'
+};
+*/
+//ES6
+// For of loop
+/*
+for (const cur of boxesArr6){ //we can use any other name for 'cur'
+  if (cur.className === 'box blue'){
+    continue; // all boxes except for 'box blue' will have tho following textContent
+  }
+  cur.textContent = 'I changed to blue'
+};
+*/
+//Or we can use 'includes' method
+for (const cur of boxesArr6){ //we can use any other name for 'cur'
+  if (cur.className.includes('blue')){
+    continue; // all boxes except for 'box blue' will have tho following textContent
+  }
+  cur.textContent = 'I changed to blue'
+};
+
+//ES5
+
+var ages = [12, 17, 8, 21, 14, 11];
+var full = ages.map(function(cur){
+  return cur >= 18;
+});
+console.log(full);
+console.log(full.indexOf(true));
+console.log(ages[full.indexOf(true)]);
+/*
+//Or
+var ages = [20, 17, 8, 21, 14, 11];
+var result=[];
+for(var i=0; i<ages.length; i++){
+    if (ages[i]>=18){result.push(i)}
+}
+console.log(result);*/
+
+//ES6
+console.log(ages.findIndex(cur => cur >= 18)); //result= 3 //findIndex returns the index for the element in which this expression >= 18 returns true
+console.log(ages.find(cur => cur >=18)); //result= 21 //find returns the element
+
+//Spread operator
+//It's a convenient way to expand elements of an array in places like arguments and function calls
+
+function  addFourAges(a, b, c, d){
+  return a+b+c+d;
+}
+var sum1 = addFourAges(18, 30, 12, 21);
+console.log(sum1);
+//Imagine that we had these four numbers in an array instead of four different vars. We need to pass an array into function
+
+//ES5
+var ages = [18, 30, 12, 21];
+var sum2 = addFourAges.apply(null, ages); //null is this variable
+console.log(sum2);
+
+//ES6
+var sum3 = addFourAges(...ages); //... is the spread operatot that expands this array into its components
+console.log(sum3);
+
+const familySmith = ['John', 'Jane', 'Mark'];
+const familyMiller = ['Mary', 'Bob', 'Ann'];
+const bugFamily = [...familySmith,'Lily', ...familyMiller]; //merges familySmith array with familyMiller array
+//'Lily' will be addes in the middle of two arrays
+console.log(bugFamily);
+
+//We also can use spread operator with a Nodelist
+const h = document.querySelector('h1');
+const boxes1 = document.querySelectorAll('.box');
+const all = [h, ...boxes]; //do don't use spread with 'h' because it's a node, not a Nodelist
+//'all' it's a Nodelist with 'h' node and boxes1 Nodelist
+//To convert 'all' Nodelist into array:
+Array.from(all).forEach(cur => cur.style.color = 'Purple');
