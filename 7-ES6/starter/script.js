@@ -298,7 +298,7 @@ console.log(ages.find(cur => cur >=18)); //result= 21 //find returns the element
 
 //Spread operator
 //It's a convenient way to expand elements of an array in places like arguments and function calls
-
+//It takes an array and transforms it into single values
 function  addFourAges(a, b, c, d){
   return a+b+c+d;
 }
@@ -328,3 +328,116 @@ const all = [h, ...boxes]; //do don't use spread with 'h' because it's a node, n
 //'all' it's a Nodelist with 'h' node and boxes1 Nodelist
 //To convert 'all' Nodelist into array:
 Array.from(all).forEach(cur => cur.style.color = 'Purple');
+
+//Rest paremeters --------------------------------------------------------------------------------------------
+//Allow us to pass an orbitrary number of an arguments into a function and use these arguments in that function
+//The Rest parameters receive a couple of single values and transforms them into an array when we call a function with multiple parameters
+
+//Example: We want to create a function that receives an arbitrary number of years and prints to the console
+//whether each person corresponding to these numbers is a full age or not
+/*
+//ES5
+function isFullAge5(){
+  //console.log(arguments);//will return object
+  var argsArr = Array.prototype.slice.call(arguments);//converts into array
+
+  argsArr.forEach(function(cur){
+    console.log((2016-cur)>=18);//result will true(1990), false(1999), true(1965)
+  })
+}
+
+isFullAge5(1990,1999,1965);
+
+//ES6
+function isFullAge6(...years){//as soon as we call a fun it will transform arguments into an array
+  //console.log(years);//will return [1990,1999,1965]
+  years.forEach(cur => console.log((2016-cur)>=18));//result will be true(1990), false(1999), true(1965)
+}
+isFullAge6(1990,1999,1965);
+*/
+
+//If we want to use different full ages:
+//ES5
+function isFullAge5(limit){//limit is the age which is full age (e.g. 21)
+  var argsArr = Array.prototype.slice.call(arguments, 1);//1 will start cutting at position 1, so 21 won't get into array
+  console.log(argsArr);
+
+  argsArr.forEach(function(cur){
+    console.log((2016-cur)>=limit);//result will true(1990), false(1999), true(1965)
+  })
+}
+
+isFullAge5(21,1990,1999,1965);
+
+//ES6
+function isFullAge6(limit, ...years){//as soon as we call a fun it will transform arguments into an array
+  //console.log(years);//will return [1990,1999,1965]
+  years.forEach(cur => console.log((2016-cur)>=limit));//result will true(1990), false(1999), true(1965)
+}
+isFullAge6(16,1990,1999,1965);
+
+//Dafault parameters
+//We use then whenever we want one or more parameters of the function to be preset, so want them to have a default value
+/*
+//ES5
+function SmithPerson(firstName, yearOfBirth, lastName, nationality){
+  lastName === undefined ? lastName = 'Smith' : lastName; //if undefined then: 'Smith'
+  nationality === undefined ? nationality = 'american' : nationality;
+  this.firstName = firstName
+  this.lastName = lastName;
+  this.yearOfBirth = yearOfBirth;
+  this.nationality = nationality;
+}
+
+var john = new SmithPerson('John',1990); //so lastName and nationalitywill be undefined
+var emily = new SmithPerson('Emily',1983,'Diaz','spanish');//will owerwrite dafualt parameters
+*/
+//ES6
+function SmithPerson(firstName, yearOfBirth, lastName='Smith', nationality='american'){
+  this.firstName = firstName
+  this.lastName = lastName;
+  this.yearOfBirth = yearOfBirth;
+  this.nationality = nationality;
+}
+
+var john = new SmithPerson('John',1990); //so lastName and nationalitywill be undefined
+var emily = new SmithPerson('Emily',1983,'Diaz','spanish');//will owerwrite dafualt parameters
+
+//Maps
+//In ES6 we can use maps instead of objects
+//In object we are limited to strings, but in maps we can use any kind of key: nums, strings, booleans, functions, objects
+
+const question = new Map();//created map
+question.set('question', 'What is the official name of latest JS version?');
+//set creates new key 'question' which is string
+
+question.set(1, 'ES5');
+question.set(2, 'ES6');
+question.set(3, 'ES2015');
+question.set(4, 'ES7');
+question.set('correct', 3);
+question.set(true, 'Correct answer');
+question.set(false, 'Wrong');
+
+console.log (question.get('question')); //get is used to retrieve data from the map
+console.log(question.size); //to get length
+//question.delete(4); //removes one value with key 4
+if (question.has(4)){//checks for element
+  console.log('Answer 4 is here');
+}
+
+//question.clear();//clear the whole map
+//-----------------
+//To loop thru the map we use forEach
+question.forEach((value, key)=>
+console.log(`This is ${key}, and it's set to ${value}`)); //e.g. This is 1, and it's set to ES5
+
+//For of Loop
+for (let [key,value] of question.entries()){ //question.entries() returns all entries of our questions map
+//and then we can use destructuring to store keys and values in two separate values [key,value]
+    if (typeof(key)==='number'){
+      console.log(`Answer ${key}:${value}`);//Answer 1:ES5, Answer 2:ES6, Answer 3:ES2015, Answer 4:ES7
+    }
+}
+const ans = parseInt(prompt('Write a correct answer'));
+console.log(question.get(ans === question.get('correct')))//question.get will return true or false
