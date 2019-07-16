@@ -406,7 +406,7 @@ var emily = new SmithPerson('Emily',1983,'Diaz','spanish');//will owerwrite dafu
 //Maps
 //In ES6 we can use maps instead of objects
 //In object we are limited to strings, but in maps we can use any kind of key: nums, strings, booleans, functions, objects
-
+/*
 const question = new Map();//created map
 question.set('question', 'What is the official name of latest JS version?');
 //set creates new key 'question' which is string
@@ -441,3 +441,102 @@ for (let [key,value] of question.entries()){ //question.entries() returns all en
 }
 const ans = parseInt(prompt('Write a correct answer'));
 console.log(question.get(ans === question.get('correct')))//question.get will return true or false
+*/
+//Classes
+//Function constructor
+/*
+//ES5
+var Person5 = function(name, yearOfBirth, job){
+  this.name = name;
+  this.yearOfBirth = yearOfBirth;
+  this.job = job;
+}
+Person5.prototype.calculateAge = function(){
+  var age = new Date().getFullYear() - this.yearOfBirth;
+  console.log(age);
+}
+var john5 = new Person5('John', 1990, 'teacher');
+john5.calculateAge(); //result 29
+
+//ES6
+//Class defenitions in ES6 are not hoisted. We need to first implement a class and after that call it
+//We can only add methods to classes, but not properties
+class Person6 {
+  constructor(name, yearOfBirth, job){
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+  }
+  calculateAge(){ //this fun will be prototype
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+  }
+  //add a static method. The method that will be attached to the class but not inherited by class instances
+  static greeting(){
+    console.log('Hi');
+  }
+}
+const john6 = new Person5('John', 1990, 'teacher');
+john6.calculateAge(); //result 29
+Person6.greeting();// will return greeting static method
+//static method can't be called from john6, like john6.greeting(), because it's not inherited
+*/
+//Classes with subclasses
+
+//ES5
+var Person5 = function(name, yearOfBirth, job){ //superclass
+  this.name = name;
+  this.yearOfBirth = yearOfBirth;
+  this.job = job;
+}
+Person5.prototype.calculateAge = function(){
+  var age = new Date().getFullYear() - this.yearOfBirth;
+  console.log(age);
+}
+var Athlete5 = function(name, yearOfBirth, job, olympicGames, medals){ //sublass
+  Person5.call(this, name, yearOfBirth, job); //this keyword will point to the new empty object
+  //If we want a person property's name, year and job to be set on the new athlete object, then we need
+  //to call the person function constructor with the this keyword also set to our newly created athlete object
+  this.olympicGames = olympicGames;
+  this.medals = medals;
+}
+//To create a prototype chain we use object.create, which allows us to manually set the prototype of an object
+//We want the prototype of the Athlete to be a prototype of the Person
+Athlete5.prototype = Object.create(Person5.prototype);
+//So now with above relation we can call johnAthlete5.calculateAge() method which is Person5 prototype
+var johnAthlete5 = new Athlete5('john', 1990, 'swimmer', 3, 10);
+johnAthlete5.calculateAge();
+
+//We can add Athlete5 prototypes only after chained Athlete5 and Person5
+Athlete5.prototype.wonMedal = function(){ //Athlete instances will inherit this method, but not Person instances. So sublass can inherit superclass methods, but not vise versa
+  this.medals++;
+  console.log(this.medals);
+}
+johnAthlete5.wonMedal(); //result 11
+
+//ES6
+class Person6 { //superclass
+  constructor(name, yearOfBirth, job){
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+  }
+  calculateAge(){ //this fun will be prototype
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+  }
+}
+class Athlete6 extends Person6 { //creating subclass
+  constructor(name, yearOfBirth, job, olympicGames, medals){
+    super(name, yearOfBirth, job)
+    this.olympicGames = olympicGames;
+    this.medals = medals;
+  }
+  wonMedal(){
+    this.medals++
+    console.log(this.medals);
+  }
+}
+const johnAthlete6 = new Athlete5('john', 1990, 'swimmer', 3, 10);
+johnAthlete6.calculateAge();
+johnAthlete6.wonMedal(); //result 11
