@@ -1,4 +1,4 @@
-// Let and const
+// Let and const----------------------------------------------------------------
 /*
 //ES5
 var name5 = 'Jane Smith'; //can be changed
@@ -14,7 +14,7 @@ let age6 = 23; //can be changed
 
 //var is function scoped and const/let are block scoped
 
-//Fucntions
+//Fucntions---------------------------------------------------------------------
 //ES5
 function driversLicense(passedTest){
 
@@ -36,7 +36,7 @@ console.log(firstName + ', born in ' + yearOfBirth + ', now allowed to drive a c
 };
 driversLicense(true);// Will get "firstName is not defined" because let and const are block scoped.
 //Block is the code wraped betweed the curly bracers{}
-//To get an access to let and const ans use them inside the function, we should declare them outside that block and put into function block
+//To get an access to let and const and use them inside the function, we should declare them outside that block and put into function block
 
 //ES6 with let/const inside of function block
 function driversLicense(passedTest){
@@ -59,7 +59,7 @@ var firstName = 'John';
 //let firstName = 'John';
 const yearOfBirth = 1990;
 
-//Es6 with loop
+//ES6 with loop-----------------------------------------------------------------
 let i = 23;
 
 for(let i = 0; i < 5; i++){
@@ -69,7 +69,7 @@ for(let i = 0; i < 5; i++){
 console.log(i);//will return 23 because loop is in the other block
 */
 /*
-//Strings in ES6
+//Strings in ES6----------------------------------------------------------------
 let firstName = 'John';
 let lastName = 'Smith';
 const yearOfBirth = 1990;
@@ -84,7 +84,7 @@ console.log('This is ' + firstName + ' ' +lastName+ '. He was born in '+yearOfBi
 console.log(`This is ${firstName} ${lastName}. He was born in ${yearOfBirth}.
   Today he is ${calcAge(yearOfBirth)} years old.`);
 
-// New string method
+//New string method-------------------------------------------------------------
 const n = `${firstName} ${lastName}`;
 console.log(n.startsWith('J')); //will return true because John starts with J. It's case sensitive
 console.log(n.endsWith('h'));
@@ -92,7 +92,7 @@ console.log(n.includes(' '));
 console.log(firstName.repeat(5)); //will return JohnJohnJohnJohnJohn
 console.log(`${firstName} `.repeat(5)); //will return John John John John John
 
-//Arrow functions
+//Arrow functions---------------------------------------------------------------
 const years = [1990, 1965, 1982, 1937];
 
 //ES5
@@ -116,7 +116,7 @@ ages6 = years.map((el,index)=>{
 });
 console.log(ages6);
 
-//Unlike normal functions, arrow functions don't have this keyword
+//Unlike normal functions, arrow functions don't have this keyword--------------
 */
 //ES5
 /*
@@ -149,7 +149,7 @@ var box5 = {
 //box5.clickMe();
 
 //ES6
-// In ES6 arrow fucntion shares this keyword with its surrounding
+// In ES6 arrow fucntion shares this keyword with its surrounding---------------
 const box6 = {
   color:'green',
   position:1,
@@ -176,7 +176,7 @@ box66.clickMe();//This is box number undefined and it is undefined
 //That because clickMe arrow fuction shares this method with its surrounding which is global context
 //So arrow function inside EventListener also don't have this keyword
 
-//Function constructor
+//Function constructor----------------------------------------------------------
 //ES5
 function Person(name){
   this.name=name;
@@ -190,7 +190,7 @@ function(friends){
 }
 var friends = ['Bob', 'Jane', 'Mark'];
 new Person ('John').myFriends5(friends);//Without bind we will have: [" is friends with Bob", " is friends with Jane", " is friends with Mark"]
-//Name is missing anonymous function in map don't have access to this name var
+//Name is missing because anonymous function in map don't have access to this name var
 
 //ES6
 Person.prototype.myFriends6 =
@@ -200,7 +200,7 @@ function(friends){
 }
 new Person ('Mike').myFriends6(friends);
 */
-/*------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 //Destructuring - the way to extract data from an object or an array
 //ES5
 var john = ['John', 26];
@@ -229,7 +229,7 @@ const [age, retirement] = calcAgeRetirement(1990);
 console.log(age);
 console.log(retirement);
 */
-//Arrays in ES6
+//Arrays in ES6-----------------------------------------------------------------
 const boxes = document.querySelectorAll('.box');
 //Transform Nodelist into Array
 //ES5
@@ -244,7 +244,7 @@ boxesArr5.forEach(function(cur){
 const boxesArr6 = Array.from(boxes);//Transform Nodelist into Array
 boxesArr6.forEach(cur => cur.style.backgroundColor = 'dodgerblue');
 
-//Loops
+//Loops-------------------------------------------------------------------------
 
 // In ES5 forEach loop and map we can't brake from them and we also can't use the continue statement, so have to use for loop
 /*
@@ -257,7 +257,7 @@ for(var i=0; i<boxesArr5.length; i++){
 };
 */
 //ES6
-// For of loop
+//For of loop-------------------------------------------------------------------
 /*
 for (const cur of boxesArr6){ //we can use any other name for 'cur'
   if (cur.className === 'box blue'){
@@ -296,7 +296,7 @@ console.log(result);*/
 console.log(ages.findIndex(cur => cur >= 18)); //result= 3 //findIndex returns the index for the element in which this expression >= 18 returns true
 console.log(ages.find(cur => cur >=18)); //result= 21 //find returns the element
 
-//Spread operator
+//Spread operator---------------------------------------------------------------
 //It's a convenient way to expand elements of an array in places like arguments and function calls
 //It takes an array and transforms it into single values
 function  addFourAges(a, b, c, d){
@@ -329,7 +329,7 @@ const all = [h, ...boxes]; //do don't use spread with 'h' because it's a node, n
 //To convert 'all' Nodelist into array:
 Array.from(all).forEach(cur => cur.style.color = 'Purple');
 
-//Rest paremeters --------------------------------------------------------------------------------------------
+//Rest paremeters --------------------------------------------------------------
 //Allow us to pass an orbitrary number of an arguments into a function and use these arguments in that function
 //The Rest parameters receive a couple of single values and transforms them into an array when we call a function with multiple parameters
 
@@ -355,7 +355,24 @@ function isFullAge6(...years){//as soon as we call a fun it will transform argum
 }
 isFullAge6(1990,1999,1965);
 */
+/*
+//Passing array as an argument:
+//ES5
+function isFullAge6(){
+  var argsArr = Array.prototype.slice.call(arguments);//converts into array
+  argsArr.forEach(cur => console.log((2016-cur)>=18));//result will be true(1990), false(1999), true(1965)
+}
+var years = [1990,1999,1965]
+isFullAge6.apply(null, years);//null is this variable
 
+//ES6
+function isFullAge6(...arr){//as soon as we call a fun it will transform arguments into an array
+  //console.log(years);//will return [1990,1999,1965]
+  arr.forEach(cur => console.log((2016-cur)>=18));//result will be true(1990), false(1999), true(1965)
+}
+var years = [1990,1999,1965]
+isFullAge6(...years);
+*/
 //If we want to use different full ages:
 //ES5
 function isFullAge5(limit){//limit is the age which is full age (e.g. 21)
@@ -376,7 +393,7 @@ function isFullAge6(limit, ...years){//as soon as we call a fun it will transfor
 }
 isFullAge6(16,1990,1999,1965);
 
-//Dafault parameters
+//Dafault parameters------------------------------------------------------------
 //We use then whenever we want one or more parameters of the function to be preset, so want them to have a default value
 /*
 //ES5
@@ -403,7 +420,7 @@ function SmithPerson(firstName, yearOfBirth, lastName='Smith', nationality='amer
 var john = new SmithPerson('John',1990); //so lastName and nationalitywill be undefined
 var emily = new SmithPerson('Emily',1983,'Diaz','spanish');//will owerwrite dafualt parameters
 
-//Maps
+//Maps--------------------------------------------------------------------------
 //In ES6 we can use maps instead of objects
 //In object we are limited to strings, but in maps we can use any kind of key: nums, strings, booleans, functions, objects
 /*
@@ -427,7 +444,7 @@ if (question.has(4)){//checks for element
 }
 
 //question.clear();//clear the whole map
-//-----------------
+
 //To loop thru the map we use forEach
 question.forEach((value, key)=>
 console.log(`This is ${key}, and it's set to ${value}`)); //e.g. This is 1, and it's set to ES5
@@ -442,7 +459,7 @@ for (let [key,value] of question.entries()){ //question.entries() returns all en
 const ans = parseInt(prompt('Write a correct answer'));
 console.log(question.get(ans === question.get('correct')))//question.get will return true or false
 */
-//Classes
+//Classes-----------------------------------------------------------------------
 //Function constructor
 /*
 //ES5
@@ -481,7 +498,7 @@ john6.calculateAge(); //result 29
 Person6.greeting();// will return greeting static method
 //static method can't be called from john6, like john6.greeting(), because it's not inherited
 */
-//Classes with subclasses
+//Classes with subclasses-------------------------------------------------------
 
 //ES5
 var Person5 = function(name, yearOfBirth, job){ //superclass
