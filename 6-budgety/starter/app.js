@@ -176,7 +176,7 @@ var UIController = (function(){
                 int = int.substr(0, int.length-3) + ',' + int.substr(int.length-3, 3) //first arg of "substr" is the index number wehere we want to start and the second arg is the how many characters we want
               } //2000 -> 2 + , + 000 = 2,000
     else if (int.length>6){
-                int = int.substr(0, int.length-6) + ',' + int.substr(int.length-3, 3) + ',' + int.substr(int.length-6, 3)
+                int = int.substr(0, int.length-6) + ',' + int.substr(int.length-6, 3) + ',' + int.substr(int.length-3, 3)
               };
 
               dec = numSplit[1];
