@@ -105,7 +105,7 @@ return getRecipe(IDs[2])
 //464: Tomato pasta
 //John: Pizza
 */
-
+/*
 //Async Await-------------------------------------------------------------------
 //Create promises in the same way as before
 const getIDs = new Promise((resolve, reject)=>{
@@ -142,19 +142,68 @@ async function getRecipesAW(){
 
   return recipe;
 }
+*/
 /*
 //If we want to return promise and console log it, this won't work
 const rec = getRecipesAW();
 console.log(rec); //result: Promise {<pending>} because getRecipesAW still running asynchronously and result of promise is not ready yet
 */
+/*
 //We should do that this way:
 getRecipesAW()
 .then(recipe => {
-  console.log(recipe) //result: [342, 234, 464, 654]
+  console.log(recipe)
+//result: [342, 234, 464, 654]
 //464: Tomato pasta
 //John: Pizza
 //464: Tomato pasta
 })
+*/
+
+//AJAX calls with Fetch and Promises--------------------------------------------
+
+function getWeather(id){
+fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${id}`)
+.then(result => {
+  //console.log(result); //will return body: ReadableStream
+  return result.json();
+})
+.then(data => { //need to create another promise which will wait for loading of body
+  //console.log(data)
+  const today = data.consolidated_weather[0];
+  console.log(`Temparatures in ${data.title} stay between ${today.min_temp} and ${today.max_temp}`)
+})
+.catch(error => {
+  console.log(error);
+});
+};
+getWeather(2487956);
+getWeather(44418);
+
+
+//AJAX calls with Fetch and Async/Await-----------------------------------------
+async function getWeather(id){
+  try {
+  const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${id}`)
+//So we create a new variable result and then await the fetch.
+//After it's done it will then assign a result of this Promise here
+  const data = await result.json();
+  const tomorrow = data.consolidated_weather[1];
+  console.log(`Temparatures in ${data.title} stay between ${tomorrow.min_temp} and ${tomorrow.max_temp}`);
+  return data;
+  }catch(error){ //will catch and console error
+  console.log(error);
+  }
+}
+getWeather(2487956);
+//getWeather(44418);
+
+//If we want to store getWeather response into variable:
+let dataLondon;
+getWeather(44418).then(data => {
+  dataLondon = data
+  console.log(dataLondon);
+});
     </script>
 </body>
 </html>
