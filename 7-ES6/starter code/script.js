@@ -180,6 +180,27 @@ downtown.streetSize();
 
 //V 2.0
 
+/*
+
+Suppose that you're working in a small town administration, and you're in charge of two town elements:
+1. Parks
+2. Streets
+
+It's a very small town, so right now there are only 3 parks and 4 streets. All parks and streets have a name and a build year.
+
+At an end-of-year meeting, your boss wants a final report with the following:
+1. Tree density of each park in the town (forumla: number of trees/park area)
+2. Average age of each town's park (forumla: sum of all ages/number of parks)
+3. The name of the park that has more than 1000 trees
+4. Total and average length of the town's streets
+5. Size classification of all streets: tiny/small/normal/big/huge. If the size is unknown, the default is normal
+
+All the report data should be printed to the console.
+
+HINT: Use some of the ES6 features: classes, subclasses, template strings, default parameters, maps, arrow functions, destructuring, etc.
+
+*/
+
 class Element {
   constructor(name, buildYear){
     this.name = name;
@@ -217,11 +238,6 @@ class Street extends Element {
     console.log(`${this.name}, built in ${this.buildYear}, is a ${classification.get(this.size)} street`)
   }
 }
-const bearWay = new Street('st', 'Bear Way', 1892, 12);
-const newport = new Street('st', 'Newport Way', 1988, 23);
-const lakeSammamish = new Street('st', 'Lake Sammamish Street', 1993, 32);
-const fallCity = new Street('st', 'Fall City Street', 1888, 42);
-
 
 const allParks = [new Park('Bellevue Downtown Park', 1990, 40, 310),
 new Park('Sammamish State Park', 1889, 59, 1001),
@@ -248,7 +264,8 @@ function reportParks(p){
   console.log(`Our ${p.length} parks have an average of ${avgAge} years`)
 
   //Which park has more than 1000 trees
-  const i = p.map(el => el.numTrees).findIndex(el => el >= 1000); //Loop thru all parks put all trees in i array and then find index of the park that has more then 1000
+  const i = p.map(el => el.numTrees).findIndex(el => el >= 1000); //Loop thru all parks put all trees in i array and
+  //then find index of the park that has more then 1000
   console.log(`${p[i].name} has more than 1000 trees`)
 }
 
