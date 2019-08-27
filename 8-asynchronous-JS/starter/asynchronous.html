@@ -161,7 +161,7 @@ getRecipesAW()
 */
 
 //AJAX calls with Fetch and Promises--------------------------------------------
-
+/*
 function getWeather(id){
 fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${id}`)
 .then(result => {
@@ -204,6 +204,111 @@ getWeather(44418).then(data => {
   dataLondon = data
   console.log(dataLondon);
 });
+*/
+//Promise.all-------------------------------------------------------------------
+
+// We can use Promise.all function which takes a list of promises in the given order
+// and returns another promise which we can use a then method to conclude the logic.
+
+var message = "";
+
+promise1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        message += "my";
+        resolve(message);
+    }, 2000)
+})
+
+promise2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        message += " first";
+        resolve(message);
+    }, 2000)
+})
+
+promise3 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        message += " promise";
+        resolve(message);
+    }, 2000)
+})
+
+var printResult = (results) => {console.log("Results = ", results, "message = ", message)}
+
+function main() {
+    // See the order of promises. Final result will be according to it
+    Promise.all([promise1, promise2, promise3]).then(printResult);
+    Promise.all([promise2, promise1, promise3]).then(printResult);
+    Promise.all([promise3, promise2, promise1]).then(printResult);
+    console.log("\"\"" + message);
+}
+
+main();
+
+/*
+//Sequence in Promise.all always the same, regardless of resolve time-----------
+// Used to display results
+const write = msg => {
+  document.body.appendChild(document.createElement('div')).innerHTML = msg;
+};
+
+// Different speed async operations
+const slow = new Promise(resolve => {
+  setTimeout(resolve, 20, 'slow');
+});
+const instant = 'instant';
+const quick = new Promise(resolve => {
+  setTimeout(resolve, 500, 'quick');
+});
+
+// The order is preserved regardless of what resolved first
+Promise.all([slow, instant, quick]).then(responses => {
+  responses.map(response => console.log(response));
+});
+//---------------------
+// Promise.all aggregates all resolved values with an array corresponding to the input order of the original Promises
+// However, I would like to point out, that the order is only preserved on the client side!
+// To the developer it looks like the Promises were fulfilled in order but in reality,
+// the Promises are processed at different speeds. This is important to know when
+// you work with a remote backend because the backend might receive your Promises
+// in a different order.
+// Here is an example that demonstrates the issue by using timeouts:
+
+const myPromises = [
+  new Promise((resolve) => setTimeout(() => {resolve('A (slow)'); console.log('A (slow)')}, 1000)),
+  new Promise((resolve) => setTimeout(() => {resolve('B (slower)'); console.log('B (slower)')}, 2000)),
+  new Promise((resolve) => setTimeout(() => {resolve('C (fast)'); console.log('C (fast)')}, 10))
+];
+
+Promise.all(myPromises).then(console.log)
+*/
+/*
+//--------------------
+// If you want to guarantee also the actual execution of your Promises, then you
+// would need a concept like a Promise queue. Here is an example using p-queue
+// (be careful, you need to wrap all Promises in functions):
+
+const PQueue = require('p-queue');
+const queue = new PQueue({concurrency: 1});
+
+// Thunked Promises:
+const myPromises = [
+  () => new Promise((resolve) => setTimeout(() => {
+    resolve('A (slow)');
+    console.log('A (slow)');
+  }, 1000)),
+  () => new Promise((resolve) => setTimeout(() => {
+    resolve('B (slower)');
+    console.log('B (slower)');
+  }, 2000)),
+  () => new Promise((resolve) => setTimeout(() => {
+    resolve('C (fast)');
+    console.log('C (fast)');
+  }, 10))
+];
+
+queue.addAll(myPromises).then(console.log);
+*/
     </script>
 </body>
 </html>
