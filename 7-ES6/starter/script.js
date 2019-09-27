@@ -554,6 +554,6 @@ class Athlete6 extends Person6 { //creating subclass
     console.log(this.medals);
   }
 }
-const johnAthlete6 = new Athlete5('john', 1990, 'swimmer', 3, 10);
+const johnAthlete6 = new Athlete6('john', 1990, 'swimmer', 3, 10);
 johnAthlete6.calculateAge();
 johnAthlete6.wonMedal(); //result 11
