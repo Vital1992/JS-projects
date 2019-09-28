@@ -1,7 +1,7 @@
 import axios from 'axios';
 export default class Search {
   constructor(query){
-    this.query = query;
+    this.query = query;//query is what typed in the search field
   }
   //async function getResults(query){ //in method we don't use async function words, async optional
   async getResults(){
