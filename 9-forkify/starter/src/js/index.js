@@ -78,6 +78,7 @@ You can listen for the hashchange event to get notified of changes to the hash i
     try {
       //Get recipe data
       await state.recipe.getRecipe();
+      state.recipe.parseIngredients();
 
       //Calculate servings and time
       state.recipe.calcTime();
