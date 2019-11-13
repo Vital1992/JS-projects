@@ -29,6 +29,7 @@ export default class Recipe {
   parseIngredients(){
     const unitsLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
     const unitShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
+    const units = [...unitShort, 'kg', 'g']
 
     const newIngredients = this.ingredients.map(el=>{//loop thru all ingredients array
 
@@ -43,7 +44,7 @@ export default class Recipe {
 
       //3. Parse ingredients into count, unit and ingredient
       const arrIng = ingredient.split(' ');
-      const unitIndex = arrIng.findIndex(el2 => unitShort.includes(el2));//includes returns true if element that we are passing is in array, false if not
+      const unitIndex = arrIng.findIndex(el2 => units.includes(el2));//includes returns true if element that we are passing is in array, false if not
       //so findIndex will return an index of element for which includes returned true
 
       let objIng;

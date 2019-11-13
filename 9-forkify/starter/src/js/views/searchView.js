@@ -17,7 +17,7 @@ const limitRecipeTitle = (title, limit=17) => { //limit results to one line in t
         newTitle.push(cur);
       }
       return acc + cur.length; //to update accumulator
-    }, 0);
+    }, 0);//0 to include accumulator in the newTitle array
     //return the result
     return `${newTitle.join(' ')}...`; //concure array in string by space and add ... to the end
   }

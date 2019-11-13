@@ -1,7 +1,8 @@
 // Global app controller
 import Search from './models/Search';
 import Recipe from './models/Recipe';
-import * as searchView from './views/searchView'
+import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView'
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /* Global state of the app
@@ -50,7 +51,9 @@ elements.searchForm.addEventListener('submit', e => {
 });
 
 elements.searchResPages.addEventListener('click', e => {
-  const btn = e.target.closest('.btn-inline')
+  const btn = e.target.closest('.btn-inline')//closest() method traverses parents (heading toward the document root) of the
+  //Element until it finds a node that matches the provided selectorString. Will return itself or the matching ancestor.
+  //If no such element exists, it returns null
   if (btn){
     const goToPage = parseInt(btn.dataset.goto, 10) //dataset reads data-goto=${type === 'prev' ? page-1 : page+1}
     //10 means from 0 to 9
@@ -71,12 +74,14 @@ You can listen for the hashchange event to get notified of changes to the hash i
   console.log(id);
   if (id){
     //Prepare UI for changes
+    recipeView.clearRecipe();
+    renderLoader(elements.recipe);
 
     //Create new recipe Object
     state.recipe = new Recipe(id);
 
     try {
-      //Get recipe data
+      //Get recipe data and pasre ingredients
       await state.recipe.getRecipe();
       state.recipe.parseIngredients();
 
@@ -85,7 +90,9 @@ You can listen for the hashchange event to get notified of changes to the hash i
       state.recipe.calcServings();
 
       //Render recipe
-      console.log(state.recipe)
+      clearLoader();
+      recipeView.renderRecipe(state.recipe);
+      console.log(state.recipe.ingredients[0])
     } catch (err) {
       alert ('Error processing recipe');
     }
