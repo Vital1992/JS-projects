@@ -77,6 +77,11 @@ You can listen for the hashchange event to get notified of changes to the hash i
     recipeView.clearRecipe();
     renderLoader(elements.recipe);
 
+    //highlight selected search item
+    if (state.search){
+      searchView.highlightSelected(id);
+    }
+
     //Create new recipe Object
     state.recipe = new Recipe(id);
 

@@ -1,16 +1,51 @@
 import {elements} from './base';
+import {Fraction} from 'fractional';
+import fracty from 'fracty';
 
 export const clearRecipe = () => {
   elements.recipe.innerHTML = '';
 }
 
+const formatCount = count => { //to convert values like 2.5 to 2 1/2
+  if (count){
+    const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));// array with two elements integer and decimal
+
+    if (!dec) return count;//like if we have 2, then 2 is returned since there's no decimals
+
+    if (int===0){//like 0.5
+      const fr = new Fraction(count);
+      return `${fr.numerator}/${fr.denominator}`// 1/2
+
+    }else{ //for 2.5, but avoid 5/2, need 2 1/2 instead
+      const fr = new Fraction(count - int);//2.5-2
+      return `${int} ${fr.numerator}/${fr.denominator}`//2 1/2
+    }
+  }
+  return '?';//in case we don't have count
+}
+/*
+How to properly convert decimals with trailing repeats like 1.3333333?
+
+$ npm install fracty --save
+Then in recipeView.js type:
+
+import fracty from 'fracty';
+and simply make your formatCount function look like this:
+
+const formatCount = count => {
+  if (count) {
+    return `${fracty(count)}`;
+  }
+  return '?';
+};
+*/
 //function to load all ingredient results on UI
 const createIngredient = ingredient => `
 <li class="recipe__item">
     <svg class="recipe__icon">
         <use href="img/icons.svg#icon-check"></use>
     </svg>
-    <div class="recipe__count">${ingredient.count}</div>
+    <div class="recipe__count">${formatCount(ingredient.count)}</div>
     <div class="recipe__ingredient">
         <span class="recipe__unit">${ingredient.unit}</span>
         ${ingredient.ingredient}

@@ -9,6 +9,14 @@ export const clearResults = () => {
   elements.searchResPages.innerHTML = ' ';//clear buttons HTML
 };
 
+export const highlightSelected = id => {//to highlight selected dish
+  const resultsArr = Array.from(document.querySelectorAll('.results__link'));//select all and remove highlight
+  resultsArr.forEach(el => {
+    el.classList.remove(`results__link--active`);
+  })
+  document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+}
+
 const limitRecipeTitle = (title, limit=17) => { //limit results to one line in the results column
   const newTitle = [];
   if (title.length > limit){
