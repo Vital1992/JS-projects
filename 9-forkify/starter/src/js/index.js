@@ -2,9 +2,11 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import List from './models/List';
+import Likes from './models/Likes';
 import * as searchView from './views/searchView';
-import * as recipeView from './views/recipeView'
-import * as listView from './views/listView'
+import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /* Global state of the app
@@ -98,8 +100,11 @@ You can listen for the hashchange event to get notified of changes to the hash i
 
       //Render recipe
       clearLoader();
-      recipeView.renderRecipe(state.recipe);
-      console.log(state.recipe.ingredients[0])
+      recipeView.renderRecipe(
+        state.recipe,
+        state.likes.isLiked(id)
+      );
+
     } catch (err) {
       alert ('Error processing recipe');
     }
@@ -142,6 +147,40 @@ elements.shopping.addEventListener('click', e => {
 }
 });
 
+//Like controller
+
+const controlLike = () => {
+  if (!state.likes) state.likes = new Likes();
+  const currentID = state.recipe.id;
+
+  //User has not yet liked current recipe
+  if (!state.likes.isLiked(currentID)){
+    //Add likes to the state
+    const newLike = state.likes.addLike(
+      currentID,
+      state.recipe.title,
+      state.recipe.author,
+      state.recipe.img
+    );
+    //Toggle the like button
+    likesView.toggleLikeBtn(true);
+    //Add like to the UI list
+    likesView.renderLike(newLike);
+
+  //User has liked current recipe
+  }else{
+    //Remove like from the state
+    state.likes.deleteLike(currentID);
+    //Toggle the like buttons
+    likesView.toggleLikeBtn(false);
+    //Remove like from UI list
+    likesView.deleteLike(currentID);
+
+  }
+  likesView.toggleLikeMenu(state.likes.getNumLikes);
+};
+
+
 // Handling recipe button clicks
 elements.recipe.addEventListener('click', e => {
   if (e.target.matches('.btn-decrease, .btn-decrease *')){//* means that also if any child of btn-decrease matches
@@ -156,9 +195,19 @@ elements.recipe.addEventListener('click', e => {
     recipeView.updateServingsIngredients(state.recipe);
     console.log(state.recipe);
   } else if (e.target.matches('.recipe__btn--add, recipe__btn--add *')){
+    //Add ingredientsto the shopping list
     controlList();
+  } else if (e.target.matches('.recipe__love, .recipe__love *')){
+    //Like Controller
+    controlLike();
   }
 
 });
 
 window.l = new List();
+/* Bugs:
+1. When not results found from search, 'undefined' returned
+2. When adding the same recipes in the shopping list, they won't add up
+
+
+*/
