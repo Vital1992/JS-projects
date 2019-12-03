@@ -106,6 +106,7 @@ You can listen for the hashchange event to get notified of changes to the hash i
       );
 
     } catch (err) {
+      console.log(err)
       alert ('Error processing recipe');
     }
   }
@@ -177,9 +178,22 @@ const controlLike = () => {
     likesView.deleteLike(currentID);
 
   }
-  likesView.toggleLikeMenu(state.likes.getNumLikes);
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
 };
 
+//Restore liked recipes on page load
+window.addEventListener('load', () => {
+  state.likes = new Likes();
+
+  //Restore likes
+  state.likes.readStorage();
+
+  //Toggle menu button
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+  //Render the existing likes
+  state.likes.likes.forEach(like => likesView.renderLike(like));
+})
 
 // Handling recipe button clicks
 elements.recipe.addEventListener('click', e => {
