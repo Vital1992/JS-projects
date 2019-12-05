@@ -8,16 +8,17 @@ export const clearRecipe = () => {
 
 const formatCount = count => { //to convert values like 2.5 to 2 1/2
   if (count){
-    const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));// array with two elements integer and decimal
+    const newCount = Math.round(count*10000)/10000;//in case of 0.2222222222 it will display 0.2222
+    const [int, dec] = newCount.toString().split('.').map(el => parseInt(el, 10));// array with two elements integer and decimal
 
-    if (!dec) return count;//like if we have 2, then 2 is returned since there's no decimals
+    if (!dec) return newCount;//like if we have 2, then 2 is returned since there's no decimals
 
     if (int===0){//like 0.5
-      const fr = new Fraction(count);
+      const fr = new Fraction(newCount);
       return `${fr.numerator}/${fr.denominator}`// 1/2
 
     }else{ //for 2.5, but avoid 5/2, need 2 1/2 instead
-      const fr = new Fraction(count - int);//2.5-2
+      const fr = new Fraction(newCount - int);//2.5-2
       return `${int} ${fr.numerator}/${fr.denominator}`//2 1/2
     }
   }

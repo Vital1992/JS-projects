@@ -38,7 +38,8 @@ const controlSearch = async () => {
 
       //5. Render results on UI
       clearLoader();//remove spinner
-      searchView.renderResults(state.search.result);//render all recepies and show them on the webpage
+      //render all recepies and show them on the webpage
+      if (state.search.result.length!==0)searchView.renderResults(state.search.result);//if statement is to prevent showing "undefined" on the UI in case no results found and arr is empty
     }catch (err){
       alert('Something went wrong');
       clearLoader();
@@ -54,7 +55,7 @@ elements.searchForm.addEventListener('submit', e => {
   controlSearch();
 });
 
-elements.searchResPages.addEventListener('click', e => {
+elements.searchResPages.addEventListener('click', e => {//clicking on page number button
   const btn = e.target.closest('.btn-inline')//closest() method traverses parents (heading toward the document root) of the
   //Element until it finds a node that matches the provided selectorString. Will return itself or the matching ancestor.
   //If no such element exists, it returns null
@@ -208,8 +209,8 @@ elements.recipe.addEventListener('click', e => {
     state.recipe.updateServings('inc');
     recipeView.updateServingsIngredients(state.recipe);
     console.log(state.recipe);
-  } else if (e.target.matches('.recipe__btn--add, recipe__btn--add *')){
-    //Add ingredientsto the shopping list
+  } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')){
+    //Add ingredients to the shopping list
     controlList();
   } else if (e.target.matches('.recipe__love, .recipe__love *')){
     //Like Controller
@@ -218,7 +219,6 @@ elements.recipe.addEventListener('click', e => {
 
 });
 
-window.l = new List();
 /* Bugs:
 1. When not results found from search, 'undefined' returned
 2. When adding the same recipes in the shopping list, they won't add up
