@@ -17,8 +17,22 @@ export const renderItem = item => {
   `;
   elements.shopping.insertAdjacentHTML('beforeend', markup);
 }
+//Render Delete all recipes button
+export const renderButton = () => {
+  const markup =`
+  <button class="btn delete-all">
+      <span>Delete all ingredients</span>
+  </button>
+  `;
+  elements.shopping.insertAdjacentHTML('afterend', markup);
+}
 
 export const deleteItem = id => {
   const item = document.querySelector(`[data-itemid="${id}"]`);
   item.parentElement.removeChild(item);
+}
+
+export const deleteButton = id => {
+const btn = document.querySelector(`.delete-all`);
+btn.parentElement.removeChild(btn);
 }

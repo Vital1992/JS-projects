@@ -26,6 +26,9 @@ export default class List {
     updateCount(id, newCount){
       this.items.find(el => el.id === id).count = newCount //will return element itself, not index and then change the count property
     }
+    deleteAll(){
+      this.items = []
+    }
   }
 
 /* Map will be better soluton

@@ -128,6 +128,7 @@ const controlList = () => {
     const item = state.list.addItem(el.count, el.unit, el.ingredient);
     listView.renderItem(item);
   })
+  listView.renderButton();
 }
 
 //Handle delete and update list item events
@@ -147,6 +148,25 @@ elements.shopping.addEventListener('click', e => {
   const val = parseFloat(e.target.value, 10) //value of element that was clicked
   state.list.updateCount(id, val);
 }
+}
+});
+
+//Delete all items button listener
+document.querySelector('.shopping').addEventListener('click', e => {
+  const ids = document.querySelectorAll('.shopping__item');
+  const idsArr = Array.from(ids)
+if (e.target.matches('.delete-all, .delete-all *')){
+  //Delete all items from the shopping list
+  //Delete from state
+  state.list.deleteAll()
+  //Delete from UI
+  //Delete each item
+  idsArr.forEach(el => {
+    const id = el.dataset.itemid;
+    listView.deleteItem(id);
+  })
+  //Delete button
+  listView.deleteButton();
 }
 });
 
