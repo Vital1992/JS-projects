@@ -46,7 +46,7 @@ const renderRecipe = recipe => {
       </a>
   </li>
   `;//adding HTML with images and names into the page
-  elements.searchResList.insertAdjacentHTML('beforeend', markup)
+    elements.searchResList.insertAdjacentHTML('beforeend', markup)
 };
 
 //Adding HTML Prev and Next buttons
@@ -81,12 +81,17 @@ const renderButtons = (page, numResults, resPerPage) => { //choose what buttons 
 };
 
 export const renderResults = (recipes, page=1, resPerPage=10) => {
+
   //render results of current page
   const start = (page-1) * resPerPage;
   const end = page * resPerPage;
 
+  if (recipes.length !==0){ //if we have results in array we show them
   recipes.slice(start, end).forEach(renderRecipe);//loop thru all recipes
-
   //render pagination buttons
   renderButtons(page, recipes.length, resPerPage);
+  
+  }else{ //ortherwise show no results message
+    elements.searchResList.insertAdjacentHTML('beforeend', `<h2 class="heading-2">No recipes found</h2>`)
+  }
 };

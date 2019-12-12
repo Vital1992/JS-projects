@@ -39,7 +39,8 @@ const controlSearch = async () => {
       //5. Render results on UI
       clearLoader();//remove spinner
       //render all recepies and show them on the webpage
-      if (state.search.result.length!==0)searchView.renderResults(state.search.result);//if statement is to prevent showing "undefined" on the UI in case no results found and arr is empty
+      //if (state.search.result.length!==0)
+      searchView.renderResults(state.search.result);//if statement is to prevent showing "undefined" on the UI in case no results found and arr is empty
     }catch (err){
       alert('Something went wrong');
       clearLoader();
