@@ -7,7 +7,7 @@ export default class Search {
   //async function getResults(query){ //in method we don't use async function words, async optional
   async getResults(){
     try{
-      const res = await axios(`https://www.food2fork.com/api/search?key=${key}&q=${this.query}`);
+      const res = await axios(`https://forkify-api.herokuapp.com/api/search?&q=${this.query}`);
       this.result = res.data.recipes;
       //console.log(res);
     } catch(error) {
