@@ -119,9 +119,24 @@ You can listen for the hashchange event to get notified of changes to the hash i
 
 //List Controller
 const controlList = () => {
+/*
+for (var i = 0; i < state.recipe.ingredients.length; i++){ //loop thru both arrays to find the same names and add up ingredients
+  for (var j = 0; j < state.list.items.length; j++){
+    if(state.list.items[j].ingredient==state.recipe.ingredients[i].ingredient){ //if new ingredient already exists in shopping list
+      state.list.items[j].count = state.list.items[j].count + state.recipe.ingredients[i].count //add new ingredient to the shopping list
+      countUpdated = true; //element from recipe exists in list and count has been updated
+      continue;
+    }
+  }
+}
+*/
   //Create new list if there's none yet
-  if (!state.list) state.list = new List();
-console.log(state.list.items)
+  if (!state.list) {
+    state.list = new List();
+  }
+  if (state.list && state.list.items.length == 0) listView.renderButton(); //if list exist and empty - render Delete all button
+
+  console.log(state.list.items)
   //Add each ingredient to the list and UI (original implementation)
   //state.recipe.ingredients.forEach(el => {
   //   const item = state.list.addItem(el.count, el.unit, el.ingredient);
@@ -130,23 +145,13 @@ console.log(state.list.items)
   // listView.renderButton();
   // console.log(state.list)
 
-  var found;
-  state.list.items.forEach(cur => {found = cur.count}) //verifying if state.list.items already exist (shopping list not empty)
-if (!found){ //if shopping list empty
-  state.recipe.ingredients.forEach(el => {
-    const item = state.list.addItem(el.count, el.unit, el.ingredient);
-    listView.renderItem(item);
-  })
-  listView.renderButton();
-
-} else if (found){ //if shopping list not empty
   var countUpdated = false;
   state.recipe.ingredients.forEach(el => { //loop thru both arrays to find the same names and add up ingredients
     state.list.items.forEach(cur => {
       if(el.ingredient==cur.ingredient){ //if new ingredient already exists in shopping list
         cur.count = cur.count + el.count //add new ingredient to the shopping list
         countUpdated = true; //element from recipe exists in list and count has been updated
-      }
+      }//write down cur element and then somehow exclude it from rendering
     })
   })
   if (countUpdated){
@@ -154,6 +159,7 @@ if (!found){ //if shopping list empty
       const id = cur.id; //remove all elements from shopping list to update it
     listView.deleteItem(id);
   })
+  //state.list.addItem(el.count, el.unit, el.ingredient);
   state.list.items.forEach(el => { //rendering updated shopping list
     const item = {
       id: el.id,
@@ -168,7 +174,6 @@ if (!found){ //if shopping list empty
     const item = state.list.addItem(el.count, el.unit, el.ingredient);
     listView.renderItem(item);
   })
-}
 }
 }
 
