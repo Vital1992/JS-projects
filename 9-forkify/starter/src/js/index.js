@@ -118,17 +118,58 @@ You can listen for the hashchange event to get notified of changes to the hash i
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));//instead of above
 
 //List Controller
-
 const controlList = () => {
   //Create new list if there's none yet
   if (!state.list) state.list = new List();
+console.log(state.list.items)
+  //Add each ingredient to the list and UI (original implementation)
+  //state.recipe.ingredients.forEach(el => {
+  //   const item = state.list.addItem(el.count, el.unit, el.ingredient);
+  //   listView.renderItem(item);
+  // })
+  // listView.renderButton();
+  // console.log(state.list)
 
-  //Add each ingredient to the list and UI
+  var found;
+  state.list.items.forEach(cur => {found = cur.count}) //verifying if state.list.items already exist (shopping list not empty)
+if (!found){ //if shopping list empty
   state.recipe.ingredients.forEach(el => {
     const item = state.list.addItem(el.count, el.unit, el.ingredient);
     listView.renderItem(item);
   })
   listView.renderButton();
+
+} else if (found){ //if shopping list not empty
+  var countUpdated = false;
+  state.recipe.ingredients.forEach(el => { //loop thru both arrays to find the same names and add up ingredients
+    state.list.items.forEach(cur => {
+      if(el.ingredient==cur.ingredient){ //if new ingredient already exists in shopping list
+        cur.count = cur.count + el.count //add new ingredient to the shopping list
+        countUpdated = true; //element from recipe exists in list and count has been updated
+      }
+    })
+  })
+  if (countUpdated){
+    state.list.items.forEach(cur => {
+      const id = cur.id; //remove all elements from shopping list to update it
+    listView.deleteItem(id);
+  })
+  state.list.items.forEach(el => { //rendering updated shopping list
+    const item = {
+      id: el.id,
+      count: el.count,
+      unit: el.unit,
+      ingredient: el.ingredient
+    }
+    listView.renderItem(item);
+  })
+} else if (!countUpdated){
+  state.recipe.ingredients.forEach(el => {
+    const item = state.list.addItem(el.count, el.unit, el.ingredient);
+    listView.renderItem(item);
+  })
+}
+}
 }
 
 //Handle delete and update list item events
@@ -142,11 +183,13 @@ elements.shopping.addEventListener('click', e => {
   state.list.deleteItem(id);
   //Delete from UI
   listView.deleteItem(id);
+  if (state.list.items.length == 0) listView.deleteButton();//remove Delete button if no items left
   //Handle the count update
 } else if (e.target.matches('.shopping__count-value')){
   if (e.target.value > 0){
   const val = parseFloat(e.target.value, 10) //value of element that was clicked
   state.list.updateCount(id, val);
+  console.log(state.list.items)
 }
 }
 });
