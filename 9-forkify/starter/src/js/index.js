@@ -119,47 +119,47 @@ You can listen for the hashchange event to get notified of changes to the hash i
 
 //List Controller
 const controlList = () => {
-/*
-for (var i = 0; i < state.recipe.ingredients.length; i++){ //loop thru both arrays to find the same names and add up ingredients
-  for (var j = 0; j < state.list.items.length; j++){
-    if(state.list.items[j].ingredient==state.recipe.ingredients[i].ingredient){ //if new ingredient already exists in shopping list
-      state.list.items[j].count = state.list.items[j].count + state.recipe.ingredients[i].count //add new ingredient to the shopping list
-      countUpdated = true; //element from recipe exists in list and count has been updated
-      continue;
-    }
-  }
-}
-*/
+
   //Create new list if there's none yet
   if (!state.list) {
     state.list = new List();
   }
   if (state.list && state.list.items.length == 0) listView.renderButton(); //if list exist and empty - render Delete all button
 
-  console.log(state.list.items)
+  //console.log(state.list.items)
   //Add each ingredient to the list and UI (original implementation)
   //state.recipe.ingredients.forEach(el => {
   //   const item = state.list.addItem(el.count, el.unit, el.ingredient);
   //   listView.renderItem(item);
   // })
   // listView.renderButton();
-  // console.log(state.list)
 
+  var found=[];
   var countUpdated = false;
   state.recipe.ingredients.forEach(el => { //loop thru both arrays to find the same names and add up ingredients
     state.list.items.forEach(cur => {
       if(el.ingredient==cur.ingredient){ //if new ingredient already exists in shopping list
         cur.count = cur.count + el.count //add new ingredient to the shopping list
         countUpdated = true; //element from recipe exists in list and count has been updated
-      }//write down cur element and then somehow exclude it from rendering
+        found.push(el.ingredient) //push all duplicate ingredients into found array
+        //console.log(found)
+      }
     })
   })
+
+  const intersection = state.recipe.ingredients.filter(element => !found.includes(element.ingredient));// find the ingredients that not present in the found array
+//and add them to the list and UI:
+  intersection.forEach(el => {
+    const item = state.list.addItem(el.count, el.unit, el.ingredient);
+    listView.renderItem(item);
+  })
+
   if (countUpdated){
     state.list.items.forEach(cur => {
       const id = cur.id; //remove all elements from shopping list to update it
     listView.deleteItem(id);
   })
-  //state.list.addItem(el.count, el.unit, el.ingredient);
+
   state.list.items.forEach(el => { //rendering updated shopping list
     const item = {
       id: el.id,
@@ -167,11 +167,6 @@ for (var i = 0; i < state.recipe.ingredients.length; i++){ //loop thru both arra
       unit: el.unit,
       ingredient: el.ingredient
     }
-    listView.renderItem(item);
-  })
-} else if (!countUpdated){
-  state.recipe.ingredients.forEach(el => {
-    const item = state.list.addItem(el.count, el.unit, el.ingredient);
     listView.renderItem(item);
   })
 }
