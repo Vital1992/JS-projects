@@ -186,6 +186,31 @@ body {
   .search:focus-within {
     transform: translateY(-2px);
     box-shadow: 0 0.7rem 3rem rgba(101, 90, 86, 0.08); }
+
+    .add_item {
+      background-color: #fff;
+      border-radius: 10rem;
+      display: flex;
+      align-items: center;
+      padding-left: 3rem;
+      transition: all .3s; }
+      .add_item:focus-within {
+        transform: translateY(-2px);
+        box-shadow: 0 0.7rem 3rem rgba(101, 90, 86, 0.08); }
+
+
+          .add_item__field {
+            border: none;
+            background: none;
+            font-family: inherit;
+            color: inherit;
+            font-size: 1.2rem;
+            width: 10rem; }
+            .add_item__field:focus {
+              outline: none; }
+            .add_item__field::placeholder {
+              color: #DAD0CC; }
+
   .search__field {
     border: none;
     background: none;

@@ -57,6 +57,7 @@ elements.searchForm.addEventListener('submit', e => {
 });
 
 elements.searchResPages.addEventListener('click', e => {//clicking on page number button
+
   const btn = e.target.closest('.btn-inline')//closest() method traverses parents (heading toward the document root) of the
   //Element until it finds a node that matches the provided selectorString. Will return itself or the matching ancestor.
   //If no such element exists, it returns null
@@ -126,7 +127,7 @@ const controlList = () => {
   }
   if (state.list && state.list.items.length == 0) listView.renderButton(); //if list exist and empty - render Delete all button
 
-  //console.log(state.list.items)
+  console.log(state.list.items)
   //Add each ingredient to the list and UI (original implementation)
   //state.recipe.ingredients.forEach(el => {
   //   const item = state.list.addItem(el.count, el.unit, el.ingredient);
@@ -175,7 +176,7 @@ const controlList = () => {
 //Handle delete and update list item events
 elements.shopping.addEventListener('click', e => {
   const id = e.target.closest('.shopping__item').dataset.itemid;
-
+console.log(id)
   //Handle the delete button
   if (e.target.matches('.shopping__delete, .shopping__delete *')) {
 
@@ -282,6 +283,23 @@ elements.recipe.addEventListener('click', e => {
   }
 
 });
+
+//Manually add items to the shopping list
+document.querySelector('.shopping').addEventListener('click', e => {
+  if (e.target.matches('.add_item__btn, .add_item__btn *') && elements.addItem.value !== '' && elements.addItemCount.value !== ''){ //if add button clicked and fields not empty
+    //Create new list if there's none yet
+    if (!state.list) {
+      state.list = new List();
+    }
+    if (state.list && state.list.items.length == 0) listView.renderButton(); //if list exist and empty - render Delete all button
+
+    const [count,unit,ingredient] = listView.getInput();
+    const item = state.list.addItem(parseInt(count), `${unit}`, `${ingredient}`);
+      listView.renderItem(item);
+      listView.clearInput();
+  }
+})
+
 
 /* Bugs:
 1. When not results found from search, 'undefined' returned

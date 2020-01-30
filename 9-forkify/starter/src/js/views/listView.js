@@ -1,5 +1,15 @@
 import {elements} from './base';
 
+export const getInput = () => {
+  return [elements.addItemCount.value, elements.addItemUnit.value, elements.addItem.value];
+}//get value from the add item and quantity fields
+
+export const clearInput = () => {
+  elements.addItemCount.value=''
+  elements.addItemUnit.value=''
+  elements.addItem.value=''
+};
+
 export const renderItem = item => {
   const markup =`
   <li class="shopping__item" data-itemid=${item.id}>
