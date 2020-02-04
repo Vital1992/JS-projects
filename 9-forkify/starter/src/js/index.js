@@ -125,9 +125,8 @@ const controlList = () => {
   if (!state.list) {
     state.list = new List();
   }
-  if (state.list && state.list.items.length == 0) listView.renderButton(); //if list exist and empty - render Delete all button
+  if (state.list && state.list.items.length == 0) listView.renderButton(); //if list exist and empty - render Delete all button, meaning that button added only once when array is empty
 
-  console.log(state.list.items)
   //Add each ingredient to the list and UI (original implementation)
   //state.recipe.ingredients.forEach(el => {
   //   const item = state.list.addItem(el.count, el.unit, el.ingredient);
@@ -143,16 +142,16 @@ const controlList = () => {
         cur.count = cur.count + el.count //add new ingredient to the shopping list
         countUpdated = true; //element from recipe exists in list and count has been updated
         found.push(el.ingredient) //push all duplicate ingredients into found array
-        //console.log(found)
       }
     })
   })
 
-  const intersection = state.recipe.ingredients.filter(element => !found.includes(element.ingredient));// find the ingredients that not present in the found array
+  const intersection = state.recipe.ingredients.filter(element => !found.includes(element.ingredient));// find the ingredients that not present in the found array (even if found still empty)
 //and add them to the list and UI:
   intersection.forEach(el => {
     const item = state.list.addItem(el.count, el.unit, el.ingredient);
     listView.renderItem(item);
+    state.list.persistData();
   })
 
   if (countUpdated){
@@ -169,6 +168,7 @@ const controlList = () => {
       ingredient: el.ingredient
     }
     listView.renderItem(item);
+    state.list.persistData();
   })
 }
 }
@@ -247,18 +247,37 @@ const controlLike = () => {
   likesView.toggleLikeMenu(state.likes.getNumLikes());
 };
 
-//Restore liked recipes on page load
+//Restore liked recipes and shopping cart on page load
 window.addEventListener('load', () => {
   state.likes = new Likes();
 
+  state.list = new List();
+
   //Restore likes
   state.likes.readStorage();
+
+  //Restore list
+  state.list.readStorage();
 
   //Toggle menu button
   likesView.toggleLikeMenu(state.likes.getNumLikes());
 
   //Render the existing likes
   state.likes.likes.forEach(like => likesView.renderLike(like));
+
+  //Render the existing shopping list
+  state.list.items.forEach(el => {
+    const item = {
+      id: el.id,
+      count: el.count,
+      unit: el.unit,
+      ingredient: el.ingredient
+    }
+    listView.renderItem(item);
+  })
+
+  //Render delete all list button
+  if (state.list && state.list.items.length > 0) listView.renderButton();
 })
 
 // Handling recipe button clicks

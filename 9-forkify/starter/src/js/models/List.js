@@ -13,6 +13,7 @@ export default class List {
       ingredient
     }
     this.items.push(item);
+    this.persistData(); //Persist data in localStorage
     return item
   }
     deleteItem(id){
@@ -21,13 +22,25 @@ export default class List {
       // [2,4,8] splice(1,1) start at position 1 and take 1 element -> returns 4, original array is [2,8] - mutates arruy
       // [2,4,8] slice(1,1) returns 4, original array is [2,4,8] - doesn't mutate array
       this.items.splice(index, 1);
+      this.persistData(); //Persist data in localStorage
     }
 
     updateCount(id, newCount){
       this.items.find(el => el.id === id).count = newCount //will return element itself, not index and then change the count property
+      this.persistData(); //Persist data in localStorage
     }
     deleteAll(){
       this.items = []
+      this.persistData(); //Persist data in localStorage
+    }
+
+    persistData(){ //Persist data in localStorage
+      localStorage.setItem('list', JSON.stringify(this.items));
+    }
+    readStorage(){
+      const storage = JSON.parse(localStorage.getItem('list'));
+      //Restore likes from the localStorage
+      if (storage) this.items = storage;
     }
   }
 
